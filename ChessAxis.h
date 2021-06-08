@@ -26,6 +26,9 @@
             void home();
             void run();
             void printStatus();
+            void moveToSquare(int);
+            void sleep();
+            void wake();
         private:
 
     };

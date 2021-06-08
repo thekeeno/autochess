@@ -31,7 +31,7 @@
 
 
 ChessAxis XAxis(X_STEP_PIN, X_DIR_PIN, X_ENABLE_PIN,X_MAX_PIN,X_MIN_PIN, false);
-//ChessAxis YAxis(Y_STEP_PIN, Y_DIR_PIN, Y_ENABLE_PIN,Y_MAX_PIN,Y_MIN_PIN, true);
+ChessAxis YAxis(Y_STEP_PIN, Y_DIR_PIN, Y_ENABLE_PIN,Y_MAX_PIN,Y_MIN_PIN, true);
 
 
 
@@ -92,13 +92,16 @@ bool blackAI = false;
 
 void setup() {
   Serial.begin(115200);
-  //mainSetup();
-  //XAxis.init();
+  mainSetup();
 
   
   XAxis.init();
+  YAxis.init();
  
-  XAxis.motor.moveTo(5000);
+  //solenoid
+
+  pinMode(FAN_PIN, OUTPUT);
+  
 
 
 }
@@ -142,13 +145,14 @@ void getSerialLine(){
 
 void loop()
 {
+  runSinglePly();
     // If at the end of travel go to the other end
-    if (XAxis.motor.distanceToGo() == 0)
-      XAxis.motor.moveTo(-XAxis.motor.currentPosition());
+    //if (XAxis.motor.distanceToGo() == 0)
+    //  XAxis.motor.moveTo(-XAxis.motor.currentPosition());
 
     
 
-    XAxis.run();
+    //XAxis.run();
 }
 
 void updateSubCharacters(){
@@ -231,10 +235,22 @@ void runSinglePly(){
   serialBoard();
   if(k == 16){strcpy(lastWhite, c);}
   else{strcpy(lastBlack, c);}
+  handleMoveOnPhysicalBoard();
+  
   checkForGameOver();
   plyNumber++;
   if(k == 8){moveNumber++; }
 
+}
+
+void handleMoveOnPhysicalBoard(){
+  
+  XAxis.moveToSquare(c[0] - ('a' + 1));
+  YAxis.moveToSquare(c[1] - '0');
+  digitalWrite(FAN_PIN, HIGH);
+  XAxis.moveToSquare(c[2] - ('a' + 1));
+  YAxis.moveToSquare(c[3] - '0');
+  digitalWrite(FAN_PIN, LOW);
 }
 
 
@@ -462,11 +478,7 @@ void boardToFen(){
   Serial.println(enPassantCol);  //en passant still does not work
 }
 
-void lastMoveToCoordinates(char move[5], bool after, bool axis){
-  int i = ~axis + 2*after;
-  //Serial.print(char[i]);
-    
-}
+
 
 
 

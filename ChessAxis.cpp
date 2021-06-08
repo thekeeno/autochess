@@ -51,3 +51,19 @@
             this->motor.run();
 
     }
+
+    void ChessAxis::moveToSquare(int square){
+        wake();
+        this->motor.runToNewPosition(square*500);
+        sleep();
+    }
+
+    void ChessAxis::sleep(){
+        digitalWrite(this->enablePin, HIGH);
+        Serial.print('slep');
+    }
+
+
+    void ChessAxis::wake(){
+        digitalWrite(this->enablePin, LOW);
+    }
