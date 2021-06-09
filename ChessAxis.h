@@ -1,5 +1,5 @@
-#ifndef ALIBESteer_h
-	#define ALIBESteer_h
+#ifndef ChessAxis_h
+	#define ChessAxis_h
 	#include <Arduino.h>
 	#include <AccelStepper.h>
     #include "ramps.h"

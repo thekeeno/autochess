@@ -2,6 +2,7 @@
 #include <AccelStepper.h>
 #include "ChessAxis.h"
 
+#define SQUARE_SIZE 3500
 
     ChessAxis::ChessAxis(int stepPin, int dirPin, int enablePin, int maxPin, int minPin, bool axis){
         this->axis  = axis;
@@ -54,13 +55,12 @@
 
     void ChessAxis::moveToSquare(int square){
         wake();
-        this->motor.runToNewPosition(square*500);
+        this->motor.runToNewPosition(square*SQUARE_SIZE);
         sleep();
     }
 
     void ChessAxis::sleep(){
         digitalWrite(this->enablePin, HIGH);
-        Serial.print('slep');
     }
 
 

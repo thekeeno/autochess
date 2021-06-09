@@ -98,7 +98,7 @@ void setup() {
   XAxis.init();
   YAxis.init();
  
-  //solenoid
+  initialiseSolenoid();
 
   pinMode(FAN_PIN, OUTPUT);
   
@@ -146,13 +146,7 @@ void getSerialLine(){
 void loop()
 {
   runSinglePly();
-    // If at the end of travel go to the other end
-    //if (XAxis.motor.distanceToGo() == 0)
-    //  XAxis.motor.moveTo(-XAxis.motor.currentPosition());
 
-    
-
-    //XAxis.run();
 }
 
 void updateSubCharacters(){
@@ -245,12 +239,15 @@ void runSinglePly(){
 
 void handleMoveOnPhysicalBoard(){
   
-  XAxis.moveToSquare(c[0] - ('a' + 1));
-  YAxis.moveToSquare(c[1] - '0');
-  digitalWrite(FAN_PIN, HIGH);
-  XAxis.moveToSquare(c[2] - ('a' + 1));
-  YAxis.moveToSquare(c[3] - '0');
-  digitalWrite(FAN_PIN, LOW);
+  moveToSquare(c[0] - ('a' + 1),c[1] - '0')
+  onSolenoid();
+  moveToSquare(c[2] - ('a' + 1),c[3] - '0')
+  offSolenoid();
+}
+
+void moveToSquare(int x,int y){
+  XAxis.moveToSquare(x);
+  YAxis.moveToSquare(y);
 }
 
 
@@ -389,7 +386,7 @@ void serialBoard(){
   Serial.println("  +-----------------+");
   Serial.println("    a b c d e f g h");
   boardToFen();
-  updateBitBoard();
+  
 }
 
 void resetBoard() {
@@ -474,8 +471,6 @@ void boardToFen(){
 //still needs en passant and clocks
 
   Serial.println(buf);
-  Serial.println(enPassantRow);
-  Serial.println(enPassantCol);  //en passant still does not work
 }
 
 
@@ -494,18 +489,34 @@ void updateBitBoard(){
   uint64_t bitBoard = 0;
   bool occupied;
   for(int i=0; i<8; i++){
-        for(int j=0; j<8; j++){
-          int index = 16*i+j;
-          if(board[index]){}
-            
-            bitBoard |= (1 << index);
-          }
-          Serial.print(occupied);
+    for(int j=0; j<8; j++){
+      int index = 16*i+j;
+      if(board[index]){}
+        
+        bitBoard |= (1 << index);
+      }
+      Serial.print(occupied);
 
-        }
-        Serial.println("");
+    }
+    Serial.println("");
 
   
   
 
-  }
+}
+
+void initialiseSolenoid(){
+  pinMode(FAN_PIN, OUTPUT);
+}
+
+void onSolenoid(){
+  setSolenoid(true);
+}
+
+void offSolenoid(){
+  setSolenoid(false);
+}
+
+void setSolenoid(bool b){
+  digitalWrite(FAN_PIN, b);
+}
