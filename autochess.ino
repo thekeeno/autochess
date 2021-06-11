@@ -74,6 +74,7 @@ const char boardInit[16*8+1]={
   14, 11, 13, 15, 12, 13, 11, 14, 28, 21, 16, 13, 12, 13, 16, 21, 0
 };
 
+unsigned int loc = 0;
 
 unsigned int seed=0;
 uint32_t  byteBoard[8];
@@ -97,6 +98,9 @@ void setup() {
   
   XAxis.init();
   YAxis.init();
+
+  XAxis.sleep();
+  YAxis.sleep();
  
   initialiseSolenoid();
 
@@ -107,7 +111,7 @@ void setup() {
 }
 
 void mainSetup(){
-  Serial.println("*** MicroMaxChess ***");
+  Serial.println("*** Welcome ***");
   
   Serial.println("White AI or Human? y/n:");
   getSerialLine();
@@ -146,6 +150,26 @@ void getSerialLine(){
 void loop()
 {
   runSinglePly();
+  //runLengthTest();
+
+}
+
+void runLengthTest(){
+  while(true){
+    XAxis.wake();
+    XAxis.motor.runToNewPosition(loc);
+    XAxis.sleep();
+    
+    Serial.println(loc);
+    loc+=500;
+    Serial.println("press enter to continue");
+    while(!Serial.available()){
+      
+    }
+    while(Serial.available()){
+      Serial.read();
+    }
+  }
 
 }
 
@@ -239,9 +263,9 @@ void runSinglePly(){
 
 void handleMoveOnPhysicalBoard(){
   
-  moveToSquare(c[0] - ('a' + 1),c[1] - '0')
+  moveToSquare(c[0] - ('a' + 1),c[1] - '0');
   onSolenoid();
-  moveToSquare(c[2] - ('a' + 1),c[3] - '0')
+  moveToSquare(c[2] - ('a' + 1),c[3] - '0');
   offSolenoid();
 }
 

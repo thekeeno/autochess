@@ -2,7 +2,7 @@
 #include <AccelStepper.h>
 #include "ChessAxis.h"
 
-#define SQUARE_SIZE 3500
+
 
     ChessAxis::ChessAxis(int stepPin, int dirPin, int enablePin, int maxPin, int minPin, bool axis){
         this->axis  = axis;
@@ -35,12 +35,11 @@
         pinMode(this->maxPin, INPUT);
         pinMode(this->enablePin, OUTPUT);
         digitalWrite(this->enablePin, LOW);
-        Serial.println(digitalRead(this->enablePin));
 
         this->motor.setAcceleration(ACCELERATION);
-        Serial.println(this->motor.maxSpeed());
+
         this->motor.setMaxSpeed(MAX_SPEED);
-        Serial.println(this->motor.maxSpeed());
+
 
 
 

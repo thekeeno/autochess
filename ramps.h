@@ -44,3 +44,9 @@
 
 #define MAX_SPEED 4000
 #define ACCELERATION 8000
+
+//approx length of rail in steps
+#define RAIL_LENGTH_STEPS 37500
+
+#define SQUARE_SIZE 4000 //each sq. about 10mm size.
+
