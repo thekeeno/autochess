@@ -29,6 +29,7 @@
             void moveToSquare(int);
             void sleep();
             void wake();
+            unsigned int clamp();
         private:
 
     };

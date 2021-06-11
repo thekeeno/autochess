@@ -66,3 +66,7 @@
     void ChessAxis::wake(){
         digitalWrite(this->enablePin, LOW);
     }
+
+    void ChessAxis::clamp(unsigned int a){ //clamps input a to be less than or equal to the rail length
+        return min(RAIL_LENGTH_STEPS, a);
+    }
